@@ -10,7 +10,7 @@ A numerology chart generator. This is built for my upcoming site, numerologicall
   <li>Add further calculations listed below</li>
   <li>Fix to allow for one line for name (separate and calculate)</li>
   <li>Support for accents and different languages</li>
-  <li>What is a good way to find out if the Y is being used as a vowel or a consonant?</li>
+  <li>What is a good way to find out if the Y is being used as a vowel or a consonant? (guess that if it has consonants on both sides, it's a vowel - then ask them to confirm on the results page)</li>
 </ul>
 
 <h2>What's Coming?</h2>
