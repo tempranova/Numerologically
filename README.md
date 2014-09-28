@@ -5,8 +5,7 @@ A numerology chart generator. This is built for my upcoming site, numerologicall
 
 <h2>To Do</h2>
 <ul>
-  <li>Clean up code further, condense basic string creation functions or put it into a jQuery (and keep the pure JS for archival purposes)</li>
-  <li>Improve the reduce() function to accurately reduce over a recurring loop, check which numbers need to be reduced and add notes to the doc below</li>
+  <li>Add further validation of input by checking for accents, non-included characters</li>
   <li>Add further calculations listed below</li>
   <li>Fix to allow for one line for name (separate and calculate)</li>
   <li>Support for accents and different languages</li>
