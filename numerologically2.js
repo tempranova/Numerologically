@@ -1,49 +1,27 @@
 // FORMAT DATA
     // Lowercase, remove dashes, remove spaces
+    // Need to change accents to corresponding characters, remove strange characters
     function formatString(str) {
           var lowerCase = str.toLowerCase();
           var noDashes = lowerCase.replace(/-/g, "");
-          var formattedThing = noDashes.replace(" ","");
-          return formattedString = formattedThing.toString();
+          return noDashes.trim();
         }
 
-    // Conversion into numbers
+    // Conversion into number as string
     function conversionToNumbers(str) {
-        var arrAlphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","_"];
-        var arrAlphabetValue = ["1","2","3","4","5","6","7","8","9","1","2","3","4","5","6","7","8","9","1","2","3","4","5","6","7","8","7"];
+        var alphabetKey = {
+            "a":"1", "b":"2", "c":"3", "d":"4", "e":"5", "f":"6", "g":"7", "h":"8", "i":"9", "j":"1", "k":"2", "l":"3", "m":"4", "n":"5", "o":"6", "p":"7", "q":"8", "r":"9", "s":"1", "t":"2", "u":"3", "v":"4", "w":"5","x":"6","y":"7","z":"8","_":"7"
+        }
         var strLength = str.length;
         var numberStr = "";
-        for (i=0;i<strLength;i++)
-        {
-          for (k=0;k<26;k++)
-              {
-                   var strThisLetter = str.substr(i,1);
-                   if (strThisLetter === arrAlphabet[k])
-                     {
-                       var thisNumber = arrAlphabetValue[k].toString();
-                       numberStr += thisNumber;
-                     }
-              }
+        for (i=0;i<strLength;i++) {
+            for (letter in alphabetKey) {
+                if (letter === str.substr(i,1)) {
+                   numberStr += alphabetKey[letter];
+                }
+            }
         }
         return numberStr;
-    }
-
-// DEFINE OBJECTS
-    // AllBirthday object
-    function AllBirthday(birthDay,birthMonth,birthYear) {
-        this.birthDay   = birthDay;
-        this.birthMonth = birthMonth;
-        this.birthYear  = birthYear;
-    }
-
-    // AllNames object (6 properties)
-    function AllNames(firstName, middleName, lastName, firstNum, middleNum, lastNum) {
-        this.firstName  = firstName;
-        this.middleName = middleName;
-        this.lastName   = lastName;
-        this.firstNum   = firstNum;
-        this.middleNum  = middleNum;
-        this.lastNum    = lastNum;
     }
 
 // CREATE OBJECTS
@@ -53,12 +31,11 @@
         var birthYear    = fullBirthday.substr(0,4);
         var birthMonth   = fullBirthday.substr(4,2);
         var birthDay     = fullBirthday.substr(6,2);
-        // Instantiate object
-        var allBirthday = {
-            "birthDay"  : birthDay,
-            "birthMonth": birthMonth,
-            "birthYear" : birthYear
-        };
+            var allBirthday = {
+                "birthDay"  : birthDay,
+                "birthMonth": birthMonth,
+                "birthYear" : birthYear
+            };
         return allBirthday;
     }
     // Create AllNames object
@@ -69,26 +46,72 @@
         var firstNum    = conversionToNumbers(firstName);
         var middleNum   = conversionToNumbers(middleName);
         var lastNum     = conversionToNumbers(lastName);
-        // Instantiate object
-        var allNames = {
-            "firstName" : firstName,
-            "middleName": middleName,
-            "lastName"  : lastName,
-            "firstNum"  : firstNum,
-            "middleNum" : middleNum,
-            "lastNum"   : lastNum
-        };
+            var allNames = {
+                "firstName" : firstName,
+                "middleName": middleName,
+                "lastName"  : lastName,
+                "firstNum"  : firstNum,
+                "middleNum" : middleNum,
+                "lastNum"   : lastNum
+            };
         return allNames;
     }
 
 // Individual number calculations and storage as lifeChart object
 
-// Helper functions
-// Reduce
+// HELPERS
+    // Addition of a string of numbers
+    function addition(str) {
+        string = str.split('');                 
+        var sum = 0;                               
+        for (i=0;i<str.length;i++) {  
+            sum += +str[i];        
+        }
+        return sum.toString();                                
+    }
+    
+    // Reduce to one digit in all cases
+    function reduceAll(str) {
+        var strAdded = addition(str);
+        var stringLength = strAdded.toString().length;
+        if (stringLength >= 2)
+          {
+            var prepare = strAdded.toString();
+            var reduction = addition(prepare);
+            return reduction;
+          } else {
+            var reduction = strAdded;
+            return reduction;
+          }
+    }
+
+    // Reduce to one digit unless 11 or 22
+    function reduce(str) {
+        if (str.length >= 2) {
+            switch (str) {
+                case '22':
+                    return '22';
+                    break;
+                case '11':
+                    return '11';
+                    break;
+                default:
+                    strAdded = addition(str);
+                    if (strAdded.length >= 2) {
+                        var strAdded = reduce(strAdded);
+                    }
+                    return strAdded;
+                    break;
+            }
+        } else {
+            return str;
+        } 
+    }
 
 // Run
 function numerologically() {
     var allBirthday = makeAllBirthday();
     var allNames = makeAllNames();
-    alert(allNames.lastNum + " " + allBirthday.birthDay);
+    var thisThing2 = reduce('99999992');
+    alert(thisThing2);
 }
