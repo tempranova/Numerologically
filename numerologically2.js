@@ -27,66 +27,132 @@
 // CREATE OBJECTS
     // Create AllBirthday object
     function makeAllBirthday() {
-        var fullBirthday = formatString(document.forms.numerologicalForm["Birthday"].value);
-        var birthYear    = fullBirthday.substr(0,4);
-        var birthMonth   = fullBirthday.substr(4,2);
-        var birthDay     = fullBirthday.substr(6,2);
+        
             var allBirthday = {
-                "birthDay"  : birthDay,
-                "birthMonth": birthMonth,
-                "birthYear" : birthYear
             };
         return allBirthday;
     }
     // Create AllNames object
-    function makeAllNames() {
-        var firstName   = formatString(document.forms.numerologicalForm["FirstName"].value);
-        var middleName  = formatString(document.forms.numerologicalForm["MiddleName"].value);
-        var lastName    = formatString(document.forms.numerologicalForm["LastName"].value);
-        var firstNum    = conversionToNumbers(firstName);
-        var middleNum   = conversionToNumbers(middleName);
-        var lastNum     = conversionToNumbers(lastName);
-            var allNames = {
-                "firstName" : firstName,
-                "middleName": middleName,
-                "lastName"  : lastName,
-                "firstNum"  : firstNum,
-                "middleNum" : middleNum,
-                "lastNum"   : lastNum
-            };
-        return allNames;
-    }
+function makeAllNames() {
+    var fullBirthday = formatString(document.forms.numerologicalForm["Birthday"].value);
+    var firstName   = formatString(document.forms.numerologicalForm["FirstName"].value);
+    var middleName  = formatString(document.forms.numerologicalForm["MiddleName"].value);
+    var lastName    = formatString(document.forms.numerologicalForm["LastName"].value);
+    var birthYear    = fullBirthday.substr(0,4);
+    var birthMonth   = fullBirthday.substr(4,2);
+    var birthDay     = fullBirthday.substr(6,2);
+    var firstNum    = conversionToNumbers(firstName);
+    var middleNum   = conversionToNumbers(middleName);
+    var lastNum     = conversionToNumbers(lastName);
+    var allNames = {
+        "birthDay"          : birthDay,
+        "birthMonth"        : birthMonth,
+        "birthYear"         : birthYear,
+        "firstName"         : firstName,
+        "middleName"        : middleName,
+        "lastName"          : lastName,
+        "firstNum"          : firstNum,
+        "middleNum"         : middleNum,
+        "lastNum"           : lastNum,
+        
+        // CHART CALCULATION METHODS
+        // BIRTHDAY CALCULATIONS
+        // Life Path (Birth day + month + year) (not reduced)
+        "lifePath"          : function() {
+                                    var notReducedBirthDay = notReduce(this.birthDay);
+                                    var notReducedBirthMonth = notReduce(this.birthMonth);
+                                    var notReducedBirthYear = notReduce(this.birthYear);
+                                    var lifePathNumber = notReduce(notReducedBirthDay
+                                                                       + notReducedBirthMonth
+                                                                       + notReducedBirthYear);
+                                    return lifePathNumber;
+                              },
+        // Challenges (BD-BM,BD-BY,C1-C2,BY-BM) (reduced)
+        "challenges"          : function() {
+                                    var challengeOne = reduceAll(this.birthDay) - reduceAll(this.birthMonth);
+                                    var challengeTwo = reduceAll(this.birthDay) - reduceAll(this.birthYear);
+                                    var challengeThree = challengeOne - challengeTwo;
+                                    var challengeFour = reduceAll(this.birthYear) - reduceAll(this.birthMonth);
+                                    var challengeNumbers = {
+                                        "challengeOne"      : challengeOne,
+                                        "challengeTwo"      : challengeTwo,
+                                        "challengeThree"    : challengeThree,
+                                        "challengeFour"     : challengeFour
+                                    }
+                                    return challengeNumbers;
+                                },
+        // Pinnacles (BD+BM,BD+BY,C1+C2,BY+BM) (reduced)
+        "pinnacles"          : function() {
+                                    var pinnacleOne = reduceAll(this.birthDay) + reduceAll(this.birthMonth);
+                                    var pinnacleTwo = reduceAll(this.birthDay) + reduceAll(this.birthYear);
+                                    var pinnacleThree = pinnacleOne + pinnacleTwo;
+                                    var pinnacleFour = reduceAll(this.birthYear) + reduceAll(this.birthMonth);
+                                    var pinnacleNumbers = {
+                                        "pinnacleOne"      : reduceAll(pinnacleOne),
+                                        "pinnacleTwo"      : reduceAll(pinnacleTwo),
+                                        "pinnacleThree"    : reduceAll(pinnacleThree),
+                                        "pinnacleFour"     : reduceAll(pinnacleFour)
+                                    }
+                                    return pinnacleNumbers;
+                                }
+    };
+    alert(allNames.pinnacles().pinnacleOne);
+}
 
-// Individual number calculations and storage as lifeChart object
+        // NAME CALCULATIONS
+        
+            // Expression (Full name)
 
-// HELPERS
+            // Heart's Desire (vowels in full name)
+
+            // Personality (consonants in full name)
+
+            // Balance (first letter of each name)
+
+            // Subconscious Self (number of different numbers represented in your name)
+        
+        // MIXTURE CALCULATIONS
+
+            // Maturity (Life Path + Expression)
+
+            // Rational Thought (first name + birth day)
+
+// HELPER FUNCTIONS
     // Addition of a string of numbers
     function addition(str) {
-        string = str.split('');                 
-        var sum = 0;                               
-        for (i=0;i<str.length;i++) {  
-            sum += +str[i];        
-        }
-        return sum.toString();                                
+        if (str.length >= 2) {
+            string = str.split('');                 
+            var sum = 0;                               
+            for (i=0;i<str.length;i++) {  
+                sum += +str[i];        
+            }
+            return sum.toString();
+        } else {
+            return str;
+        } 
     }
     
     // Reduce to one digit in all cases
     function reduceAll(str) {
-        var strAdded = addition(str);
-        var stringLength = strAdded.toString().length;
-        if (stringLength >= 2)
-          {
-            var prepare = strAdded.toString();
-            var reduction = addition(prepare);
-            return reduction;
-          } else {
-            var reduction = strAdded;
-            return reduction;
-          }
+        if (str.length >= 2) {
+            var strAdded = addition(str);
+            var stringLength = strAdded.toString().length;
+            if (stringLength >= 2)
+              {
+                var prepare = strAdded.toString();
+                var reduction = addition(prepare);
+                return reduction;
+              } else {
+                var reduction = strAdded;
+                return reduction;
+              }
+        } else {
+            return str;
+        } 
     }
 
     // Reduce to one digit unless 11 or 22
-    function reduce(str) {
+    function notReduce(str) {
         if (str.length >= 2) {
             switch (str) {
                 case '22':
@@ -98,7 +164,7 @@
                 default:
                     strAdded = addition(str);
                     if (strAdded.length >= 2) {
-                        var strAdded = reduce(strAdded);
+                        var strAdded = notReduce(strAdded);
                     }
                     return strAdded;
                     break;
@@ -108,10 +174,34 @@
         } 
     }
 
+    // Return all vowels or consonants of string
+    function returnVowelsOrConsonants(str,vowelsOrConsonants) {
+      var strLength = str.length;
+      var returnedLetters = "";
+      var letter = "";
+      if (vowelsOrConsonants === "vowels") {
+          for (i=0;i<strLength;i++) {
+          letter = str.substr(0+i,1);
+              if (letter === "a" || letter === "e" || letter === "i" || letter === "o" || letter === "u" || letter === "_") {
+                returnedLetters += letter;
+              }
+          }
+       } else if (vowelsOrConsonants === "consonants") {
+           for (i=0;i<strLength;i++) {
+          letter = str.substr(0+i,1);
+              if (letter !== "a" && letter !== "e" && letter !== "i" && letter !== "o" && letter !== "u" && letter !== "_") {
+                returnedLetters += letter;
+              }
+            }
+       } else {
+           var returnedLetters = "Please enter 'vowels' or 'consonants'!";
+           return returnedLetters;
+       }
+       return returnedLetters;
+    }
+
 // Run
 function numerologically() {
     var allBirthday = makeAllBirthday();
     var allNames = makeAllNames();
-    var thisThing2 = reduce('99999992');
-    alert(thisThing2);
 }
