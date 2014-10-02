@@ -94,28 +94,64 @@ function makeAllNames() {
                                         "pinnacleFour"     : reduceAll(pinnacleFour)
                                     }
                                     return pinnacleNumbers;
-                                }
-    };
-    alert(allNames.pinnacles().pinnacleOne);
-}
+                                },
 
         // NAME CALCULATIONS
+        // Expression (Full name) (not reduced)
+        "expression"           : function() {
+                                    var notReducedFirstNum = notReduce(this.firstNum);
+                                    var notReducedMiddleNum = notReduce(this.middleNum);
+                                    var notReducedLastNum = notReduce(this.lastNum);
+                                    var expressionNumber = notReduce(notReducedFirstNum
+                                                                       + notReducedMiddleNum
+                                                                       + notReducedLastNum);
+                                    return expressionNumber;
+        },
+
+        // Heart's Desire (vowels in full name) (not reduced)
+        "heartsDesire"           : function() {
+                                    var firstNameVowels = returnVowelsOrConsonants(this.firstName, "vowels");
+                                    var middleNameVowels = returnVowelsOrConsonants(this.middleName, "vowels");
+                                    var lastNameVowels = returnVowelsOrConsonants(this.lastName, "vowels");
+                                    var fullNameVowels = firstNameVowels + middleNameVowels + lastNameVowels;
+                                    var fullNumVowels = conversionToNumbers(fullNameVowels);
+                                    var heartsDesireNumber = notReduce(fullNumVowels);
+                                    return heartsDesireNumber;
+        },
         
-            // Expression (Full name)
+        // Personality (consonants in full name) (not reduced)
+        "personality"           : function() {
+                                    var firstNameConsonants = returnVowelsOrConsonants(this.firstName, "consonants");
+                                    var middleNameConsonants = returnVowelsOrConsonants(this.middleName, "consonants");
+                                    var lastNameConsonants = returnVowelsOrConsonants(this.lastName, "consonants");
+                                    var fullNameConsonants = firstNameConsonants + middleNameConsonants + lastNameConsonants;
+                                    var fullNumConsonants = conversionToNumbers(fullNameConsonants);
+                                    var personalityNumber = notReduce(fullNumConsonants);
+                                    return personalityNumber;
+        },
 
-            // Heart's Desire (vowels in full name)
+        // ???? Balance (first letter of each name) (reduced???)
+        "balance"           : function() {
+                                    var firstNameFirstLetter = this.firstName.substr(0,1);
+                                    var middleNameFirstLetter = this.middleName.substr(0,1);
+                                    var lastNameFirstLetter = this.lastName.substr(0,1);
+                                    var allFirstLetters = firstNameFirstLetter + middleNameFirstLetter + lastNameFirstLetter;
+                                    var allFirstNumbers = conversionToNumbers(allFirstLetters);
+                                    var balanceNumber = notReduce(allFirstNumbers);
+                                    return balanceNumber;
+        },
+                   
+    };
+    alert(allNames.balance());
+}
 
-            // Personality (consonants in full name)
-
-            // Balance (first letter of each name)
-
-            // Subconscious Self (number of different numbers represented in your name)
+        // Subconscious Self (number of different numbers represented in your name)
         
         // MIXTURE CALCULATIONS
 
-            // Maturity (Life Path + Expression)
+            // Maturity (Life Path + Expression) (reduced?)
 
-            // Rational Thought (first name + birth day)
+            // Rational Thought (first name + birth day) (reduced?)
 
 // HELPER FUNCTIONS
     // Addition of a string of numbers
