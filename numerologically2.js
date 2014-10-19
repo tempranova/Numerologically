@@ -35,9 +35,18 @@
     // Create AllNames object
 function makeAllNames() {
     var fullBirthday = formatString(document.forms.numerologicalForm["Birthday"].value);
-    var firstName   = formatString(document.forms.numerologicalForm["FirstName"].value);
-    var middleName  = formatString(document.forms.numerologicalForm["MiddleName"].value);
-    var lastName    = formatString(document.forms.numerologicalForm["LastName"].value);
+    var formattedName = formatString(document.forms.numerologicalForm["FullName"].value);
+    var split = formattedName.split(" ");
+    var firstName   = split[0].toString();
+    var middleName = split[1].toString();
+    // Putting together any extra middle names
+    if (split.length>3) {
+        for (i=2; i<split.length-1;i++) {
+            var middleName = middleName + split[i].toString();
+        }
+    }
+    console.log(middleName);
+    var lastName    = split[split.length-1].toString();
     var birthYear    = fullBirthday.substr(0,4);
     var birthMonth   = fullBirthday.substr(4,2);
     var birthDay     = fullBirthday.substr(6,2);
@@ -142,7 +151,12 @@ function makeAllNames() {
         },
                    
     };
-    alert(allNames.balance());
+    document.getElementById("output").innerHTML = "Life Path Number: " + allNames.lifePath() + "<br>"
+                                                + "Expression Number: " + allNames.expression() + "<br>"
+                                                + "Heart's Desire Number: " + allNames.heartsDesire() + "<br>"
+                                                + "Personality Number: " + allNames.personality() + "<br>"
+                                                + "Challenges: " + allNames.challenges().challengeOne + ", " + allNames.challenges().challengeTwo + ", " + allNames.challenges().challengeThree + ", " + allNames.challenges().challengeFour + "<br>"
+                                                + "Pinnacles: " + allNames.pinnacles().pinnacleOne + ", " + allNames.pinnacles().pinnacleTwo + ", " + allNames.pinnacles().pinnacleThree + ", " + allNames.pinnacles().pinnacleFour + "<br>"
 }
 
         // Subconscious Self (number of different numbers represented in your name)
