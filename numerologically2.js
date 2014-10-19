@@ -33,9 +33,9 @@
         return allBirthday;
     }
     // Create AllNames object
-function makeAllNames() {
-    var fullBirthday = formatString(document.forms.numerologicalForm["Birthday"].value);
-    var formattedName = formatString(document.forms.numerologicalForm["FullName"].value);
+function makeAllNames() {    
+    var fullBirthday = formatString(document.getElementById("Birthday").value);
+    var formattedName = formatString(document.getElementById("FullName").value);
     var split = formattedName.split(" ");
     var firstName   = split[0].toString();
     var middleName = split[1].toString();
