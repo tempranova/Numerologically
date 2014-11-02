@@ -32,8 +32,8 @@
             };
         return allBirthday;
     }
-    // Create AllNames object
-function makeAllNames() {    
+    // Create AllNames object with all the methods for calculation
+function makeAllNames() {
     var fullBirthday = formatString(document.getElementById("Birthday").value);
     var formattedName = formatString(document.getElementById("FullName").value);
     var split = formattedName.split(" ");
@@ -45,7 +45,6 @@ function makeAllNames() {
             var middleName = middleName + split[i].toString();
         }
     }
-    console.log(middleName);
     var lastName    = split[split.length-1].toString();
     var birthYear    = fullBirthday.substr(0,4);
     var birthMonth   = fullBirthday.substr(4,2);
@@ -151,12 +150,35 @@ function makeAllNames() {
         },
                    
     };
-    document.getElementById("output").innerHTML = "Life Path Number: " + allNames.lifePath() + "<br>"
-                                                + "Expression Number: " + allNames.expression() + "<br>"
-                                                + "Heart's Desire Number: " + allNames.heartsDesire() + "<br>"
-                                                + "Personality Number: " + allNames.personality() + "<br>"
-                                                + "Challenges: " + allNames.challenges().challengeOne + ", " + allNames.challenges().challengeTwo + ", " + allNames.challenges().challengeThree + ", " + allNames.challenges().challengeFour + "<br>"
-                                                + "Pinnacles: " + allNames.pinnacles().pinnacleOne + ", " + allNames.pinnacles().pinnacleTwo + ", " + allNames.pinnacles().pinnacleThree + ", " + allNames.pinnacles().pinnacleFour + "<br>"
+    // Actual results stored here
+    var allResults = {
+        "birthDay"          : birthDay,
+        "birthMonth"        : birthMonth,
+        "birthYear"         : birthYear,
+        "firstName"         : firstName,
+        "middleName"        : middleName,
+        "lastName"          : lastName,
+        "firstNum"          : firstNum,
+        "middleNum"         : middleNum,
+        "lastNum"           : lastNum,
+        "lifePath"          : allNames.lifePath(),
+        "expression"        : allNames.expression(),
+        "heartsDesire"      : allNames.heartsDesire(),
+        "personality"       : allNames.personality(),
+        "challengeOne"      : allNames.challenges().challengeOne,
+        "challengeTwo"      : allNames.challenges().challengeTwo,
+        "challengeThree"    : allNames.challenges().challengeThree,
+        "challengeFour"     : allNames.challenges().challengeFour,
+        "pinnacleOne"       : allNames.pinnacles().pinnacleOne,
+        "pinnacleTwo"       : allNames.pinnacles().pinnacleTwo,
+        "pinnacleThree"     : allNames.pinnacles().pinnacleThree,
+        "pinnacleFour"      : allNames.pinnacles().pinnacleFour
+    };
+    // Store results in local storage
+    var storedResults = JSON.stringify(allResults);
+    localStorage.setItem('storedResults',storedResults);
+    // Sends to a sample chart page, then there they can choose to save it or share it
+    window.location.href = "http://numerologically.com/chart/sample-testing/";
 }
 
         // Subconscious Self (number of different numbers represented in your name)
