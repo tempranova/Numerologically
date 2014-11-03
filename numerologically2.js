@@ -174,11 +174,46 @@ function makeAllNames() {
         "pinnacleThree"     : allNames.pinnacles().pinnacleThree,
         "pinnacleFour"      : allNames.pinnacles().pinnacleFour
     };
-    // Store results in local storage
-    var storedResults = JSON.stringify(allResults);
-    localStorage.setItem('storedResults',storedResults);
-    // Sends to a sample chart page, then there they can choose to save it or share it
-    window.location.href = "http://numerologically.com/chart/sample-testing/";
+    
+    // Issue AJAX post with JSON
+      var json = JSON.stringify(allResults);
+      var httpRequest;
+      makeRequest('http://numerologically.com/wp-content/themes/glwparent-child/chart.php');
+      function makeRequest(url) {
+        if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+          httpRequest = new XMLHttpRequest();
+        } else if (window.ActiveXObject) { // IE
+          try {
+            httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+          } 
+          catch (e) {
+            try {
+              httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+            } 
+            catch (e) {}
+          }
+        }
+
+        if (!httpRequest) {
+          alert('Giving up :( Cannot create an XMLHTTP instance');
+          return false;
+        }
+        httpRequest.onreadystatechange = alertContents;
+        httpRequest.open('POST', url);
+        httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        httpRequest.send('allResults=' + encodeURIComponent(JSON.stringify(allResults)));
+      }
+
+      function alertContents() {
+        if (httpRequest.readyState === 4) {
+          if (httpRequest.status === 200) {
+            alert(httpRequest.responseText);
+          } else {
+            alert('There was a problem with the request.');
+          }
+        }
+      }
+    
 }
 
         // Subconscious Self (number of different numbers represented in your name)
