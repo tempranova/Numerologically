@@ -148,6 +148,33 @@ function makeAllNames() {
                                     var balanceNumber = notReduce(allFirstNumbers);
                                     return balanceNumber;
         },
+        
+        // Transits
+        "transits"          : function() {
+                                    var physicalTransit = [];
+                                    var mentalTransit = []
+                                    var spiritualTransit = [];
+                                    function calculateTransit (thisName, thisArray) {
+                                        while (thisArray.length<100) {
+                                            for (k=0;k<thisName.length;k++) {
+                                                var thisLetter = thisName.substr(k,1);
+                                                var loopNumber = conversionToNumbers(thisLetter);
+                                                for (m=0;m<loopNumber;m++) {
+                                                    thisArray.push(thisLetter);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    calculateTransit(this.firstName, physicalTransit);
+                                    calculateTransit(this.middleName, mentalTransit);
+                                    calculateTransit(this.lastName, spiritualTransit);
+                                    var allTransits = {
+                                        "physicalTransit"     : physicalTransit,
+                                        "mentalTransit"       : mentalTransit,
+                                        "spiritualTransit"    : spiritualTransit
+                                    }
+                                    return allTransits;
+        },
                    
     };
     // Actual results stored here
@@ -172,7 +199,10 @@ function makeAllNames() {
         "pinnacleOne"       : allNames.pinnacles().pinnacleOne,
         "pinnacleTwo"       : allNames.pinnacles().pinnacleTwo,
         "pinnacleThree"     : allNames.pinnacles().pinnacleThree,
-        "pinnacleFour"      : allNames.pinnacles().pinnacleFour
+        "pinnacleFour"      : allNames.pinnacles().pinnacleFour,
+        "physicalTransit"   : allNames.transits().physicalTransit,
+        "mentalTransit"     : allNames.transits().mentalTransit,
+        "spiritualTransit"  : allNames.transits().spiritualTransit,
     };
     
     // Issue AJAX post with JSON
@@ -207,7 +237,8 @@ function makeAllNames() {
       function alertContents() {
         if (httpRequest.readyState === 4) {
           if (httpRequest.status === 200) {
-            alert(httpRequest.responseText);
+            var div = document.getElementById('chart-container');
+            div.innerHTML = httpRequest.responseText;
           } else {
             alert('There was a problem with the request.');
           }
