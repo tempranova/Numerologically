@@ -149,29 +149,47 @@ function makeAllNames() {
                                     return balanceNumber;
         },
         
-        // Transits
+        // Transits + Essences
         "transits"          : function() {
                                     var physicalTransit = [];
                                     var mentalTransit = []
                                     var spiritualTransit = [];
-                                    function calculateTransit (thisName, thisArray) {
+                                    var physicalEssenceNumbers = [];
+                                    var mentalEssenceNumbers = [];
+                                    var spiritualEssenceNumbers = [];
+                                    var essenceNumbers = [];
+                                    var karmicDebtNumbers = [];
+            
+                                    function calculateTransit (thisName, thisArray, thisEssence) {
                                         while (thisArray.length<100) {
                                             for (k=0;k<thisName.length;k++) {
                                                 var thisLetter = thisName.substr(k,1);
                                                 var loopNumber = conversionToNumbers(thisLetter);
                                                 for (m=0;m<loopNumber;m++) {
                                                     thisArray.push(thisLetter);
+                                                    thisEssence.push(loopNumber);
                                                 }
                                             }
                                         }
                                     }
-                                    calculateTransit(this.firstName, physicalTransit);
-                                    calculateTransit(this.middleName, mentalTransit);
-                                    calculateTransit(this.lastName, spiritualTransit);
+                                    calculateTransit(this.firstName, physicalTransit, physicalEssenceNumbers);
+                                    calculateTransit(this.middleName, mentalTransit, mentalEssenceNumbers);
+                                    calculateTransit(this.lastName, spiritualTransit, spiritualEssenceNumbers);
+                                                
+                                    function calculateEssence() {
+                                        for (l=0;l<99;l++) {
+                                            var thisEssence = physicalEssenceNumbers[l] + mentalEssenceNumbers[l] + spiritualEssenceNumbers[l];
+                                            var thisNumber = notReduce(thisEssence);
+                                            essenceNumbers.push(thisNumber);
+                                        }
+                                    }
+                                    calculateEssence();
+            
                                     var allTransits = {
                                         "physicalTransit"     : physicalTransit,
                                         "mentalTransit"       : mentalTransit,
-                                        "spiritualTransit"    : spiritualTransit
+                                        "spiritualTransit"    : spiritualTransit,
+                                        "essences"            : essenceNumbers,
                                     }
                                     return allTransits;
         },
@@ -203,6 +221,7 @@ function makeAllNames() {
         "physicalTransit"   : allNames.transits().physicalTransit,
         "mentalTransit"     : allNames.transits().mentalTransit,
         "spiritualTransit"  : allNames.transits().spiritualTransit,
+        "essences"          : allNames.transits().essences,
     };
     
     // Issue AJAX post with JSON
@@ -288,6 +307,7 @@ function makeAllNames() {
             return str;
         } 
     }
+
 
     // Reduce to one digit unless 11 or 22
     function notReduce(str) {

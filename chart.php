@@ -26,6 +26,8 @@
         "physicalTransit" => $obj->physicalTransit,
         "mentalTransit" => $obj->mentalTransit,
         "spiritualTransit" => $obj->spiritualTransit,
+        "essences" => $obj->essences,
+        "karmicDebt" => $obj->karmicDebt,
     );
     $allResults = array (
         "lifePath" => $obj->lifePath,
@@ -93,9 +95,6 @@
     -->
         <div class="col-sm-8" style="text-align:center;">
             <h1><?php echo $allData['firstName'] . ' ' . $allData['middleName'] . ' ' . $allData['lastName']; ?></h1>
-            <?php foreach($allData['physicalTransit'] as $letter) { echo $letter;  } ?>
-            <?php foreach($allData['mentalTransit'] as $letter) { echo $letter;  } ?>
-            <?php foreach($allData['spiritualTransit'] as $letter) { echo $letter;  } ?>
             <h4 style="text-transform:uppercase;"><small>Full Numerology Chart</small></h4>
             <hr>
             <div class="full-chart">
@@ -182,6 +181,33 @@
                 </div>
                 <hr>
                 <div class="row">
+                    <table class="table">
+                        <tr>
+                            <td>Physical Transit</td>
+                            <?php for($i=1;$i<100;$i++) {
+                                echo "<td>" . $allData['physicalTransit'][$i] . "</td>";  } 
+                            ?>
+                        </tr>
+                        <tr>
+                            <td>Mental Transit</td>
+                            <?php for($i=1;$i<100;$i++) {
+                                echo "<td>" . $allData['mentalTransit'][$i] . "</td>";  } 
+                            ?>
+                        </tr>
+                        <tr>
+                            <td>Spiritual Transit</td>
+                            <?php for($i=1;$i<100;$i++) {
+                                echo "<td>" . $allData['spiritualTransit'][$i] . "</td>";  } 
+                            ?>
+                        </tr>
+                        <tr>
+                            <td>Essence Numbers</td>
+                            <?php foreach($allData['essences'] as $number) { 
+                                echo "<td>" . $number . "</td>";  } 
+                            ?>
+                        </tr>
+                    </table>
+
                     <div class="col-xs-12">
                         <p>Here will go some general stats and comments on you from your chart results.</p>
                     </div>
